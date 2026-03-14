@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="128x128" href="icons/logo.png">
+
+    <title>Warsha | ورشة </title>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    
+
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            
+        }
+
+        
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        body::-webkit-scrollbar-track
+        {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        border-radius: 10px;
+        background-color: #f5f5f500;
+        overflow-x: auto;
+        }
+
+        body::-webkit-scrollbar
+        {
+        width: 6px;
+        height: 3px;
+        background-color: #f5f5f500;
+        overflow-x: auto;
+        }
+
+        body::-webkit-scrollbar-thumb
+        {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #8bccf8;
+        overflow-x: auto;
+        }
+
+
+        
+        /* الوضع الداكن (افتراضي) */
+        body.dark-mode {
+            background: #0a0a0a;
+            color: #ffffff;
+        }
+
+        /* الوضع الفاتح */
+        body.light-mode {
+            background: #f5f5f5;
+            color: #1a1a1a;
+        }
+
+        /* خلفية محسنة للوضع الداكن */
+        body.dark-mode .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(100, 100, 255, 0.15) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(255, 100, 255, 0.1) 0%, transparent 35%),
+                radial-gradient(circle at 40% 80%, rgba(100, 255, 255, 0.1) 0%, transparent 40%),
+                #0a0a0a;
+            animation: bgPulse 10s ease-in-out infinite alternate;
+        }
+
+        /* خلفية محسنة للوضع الفاتح */
+        body.light-mode .bg-animated {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.1) 0%, transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 150, 0.05) 0%, transparent 35%),
+                radial-gradient(circle at 40% 80%, rgba(0, 255, 200, 0.05) 0%, transparent 40%),
+                #f0f0f0;
+            animation: bgPulseLight 12s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgPulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        @keyframes bgPulseLight {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 0.8; transform: scale(1.03); }
+        }
+
+        /* شبكة متحركة للخلفية */
+        .bg-animated::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 20px);
+            animation: moveGrid 30s linear infinite;
+        }
+
+        body.light-mode .bg-animated::before {
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 20px),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 20px);
+        }
+
+        @keyframes moveGrid {
+            0% { transform: translateX(0) translateY(0); }
+            100% { transform: translateX(30px) translateY(30px); }
+        }
+
+        /* جزيئات متحركة */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            animation: particleFloat 15s linear infinite;
+        }
+
+        body.dark-mode .particle {
+            background: rgba(255,255,255,0.3);
+            box-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+
+        body.light-mode .particle {
+            background: rgba(0,0,0,0.2);
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(100vh) scale(1); opacity: 0.8; }
+            100% { transform: translateY(-100vh) scale(0); opacity: 0; }
+        }
+
+        /* كارت - يتغير مع الوضع */
+        .modern-card {
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .modern-card {
+            background: rgba(20, 20, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        body.light-mode .modern-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .modern-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .modern-card:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        body.dark-mode .modern-card:hover {
+            border-color: rgba(255,255,255,0.2);
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.8);
+        }
+
+        body.light-mode .modern-card:hover {
+            border-color: rgba(0,0,0,0.2);
+            box-shadow: 0 30px 40px -20px rgba(0,0,0,0.2);
+        }
+
+        .modern-card:hover::before {
+            left: 100%;
+        }
+
+        /* زر التبديل بين الأوضاع */
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .theme-toggle {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.1);
+            color: #1a1a1a;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg) scale(1.1);
+        }
+
+        body.dark-mode .theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        body.light-mode .theme-toggle:hover {
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* زر نيون - يتكيف مع الوضع */
+        .neon-button {
+            background: transparent;
+            border-radius: 50px;
+            padding: 12px 30px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        body.dark-mode .neon-button {
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        body.light-mode .neon-button {
+            color: #1a1a1a;
+            border: 2px solid rgba(0,0,0,0.2);
+        }
+
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            transition: width 0.4s ease;
+            z-index: -1;
+        }
+
+        body.dark-mode .neon-button::before {
+            background: white;
+        }
+
+        body.light-mode .neon-button::before {
+            background: #1a1a1a;
+        }
+
+        body.dark-mode .neon-button:hover {
+            color: black;
+            border-color: white;
+        }
+
+        body.light-mode .neon-button:hover {
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+        .neon-button:hover::before {
+            width: 100%;
+        }
+
+        /* عنوان نيون - يتكيف */
+        .neon-title {
+            font-size: 5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            background-size: 200% auto;
+            animation: shine 3s linear infinite;
+        }
+
+        body.dark-mode .neon-title {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 50%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-mode .neon-title {
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 50%, #1a1a1a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* نص الوضع الفاتح */
+        body.light-mode .text-gray-400 {
+            color: #4a4a4a;
+        }
+
+        body.light-mode .text-gray-300 {
+            color: #3a3a3a;
+        }
+
+        body.light-mode .border-white\/10 {
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        body.light-mode .bg-white\/10 {
+            background: rgba(0,0,0,0.05);
+        }
+
+        body.light-mode .text-white {
+            color: #1a1a1a;
+        }
+
+        body.light-mode .text-gray-500 {
+            color: #6b6b6b;
+        }
+
+        body.light-mode .text-gray-600 {
+            color: #5a5a5a;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(to top, var(--bg-color, #0a0a0a), transparent);
+        }
+
+        body.dark-mode .hero::after {
+            --bg-color: #0a0a0a5e;
+        }
+
+        body.light-mode .hero::after {
+            --bg-color: #f5f5f5;
+        }
+        
+        /* أيقونات متحركة */
+        .floating-icon {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* خطوط متحركة */
+        .animated-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, currentColor, transparent);
+            width: 100%;
+            animation: slideLine 2s ease-in-out infinite;
+        }
+
+        body.dark-mode .animated-line {
+            color: white;
+        }
+
+        body.light-mode .animated-line {
+            color: #1a1a1a;
+        }
+
+        @keyframes slideLine {
+            0% { transform: scaleX(0); opacity: 0; }
+            50% { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(0); opacity: 0; }
+        }
+
+        /* أيقونات مميزة */
+        .icon-glow {
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .icon-glow {
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+        }
+
+        body.light-mode .icon-glow {
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.2));
+        }
+
+        .icon-glow:hover {
+            transform: scale(1.1);
+        }
+
+        body.dark-mode .icon-glow:hover {
+            filter: drop-shadow(0 0 20px rgba(255,255,255,0.6));
+        }
+
+        body.light-mode .icon-glow:hover {
+            filter: drop-shadow(0 0 15px rgba(0,0,0,0.3));
+        }
+        @media screen and (max-width:600px) {
+            #mediamt{
+                margin-top: 100px;
+            }
+        }
+    </style>
+</head>
+<body class="dark-mode">
+
+    <!-- خلفية متحركة محسنة -->
+    <div class="bg-animated"></div>
+    
+    <!-- جزيئات متحركة -->
+    <div id="particles"></div>
+
+    <!-- الهيدر -->
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg" >
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo -->
+                <div class="text-2xl font-bold" data-aos="fade-left">
+                    <span class="text-inherit">◈</span>
+                    <span class="text-inherit mx-2">Warsha</span>
+                    <span class="text-gray-500">LAB</span>
+                </div>
+
+                <!-- Navigation -->
+                <!-- <nav class="hidden md:flex items-center space-x-8 space-x-reverse">
+                    <a href="#" class="text-gray-400 hover:text-inherit transition relative group" data-aos="fade-left" data-aos-delay="100">
+                        الرئيسية
+                        <span class="absolute bottom-0 right-0 w-0 h-0.5 bg-current transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#products" class="text-gray-400 hover:text-inherit transition relative group" data-aos="fade-left" data-aos-delay="200">
+                        منتجاتنا
+                        <span class="absolute bottom-0 right-0 w-0 h-0.5 bg-current transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#gallery" class="text-gray-400 hover:text-inherit transition relative group" data-aos="fade-left" data-aos-delay="300">
+                        المعرض
+                        <span class="absolute bottom-0 right-0 w-0 h-0.5 bg-current transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#contact" class="text-gray-400 hover:text-inherit transition relative group" data-aos="fade-left" data-aos-delay="400">
+                        اتصل بنا
+                        <span class="absolute bottom-0 right-0 w-0 h-0.5 bg-current transition-all group-hover:w-full"></span>
+                    </a>
+                </nav> -->
+
+                <!-- Theme Toggle و Contact -->
+                <div class="flex items-center gap-4">
+                    <!-- زر تبديل الوضع -->
+                    <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </div>
+                    
+                    <!-- Contact Button -->
+                    <button id="whatsappBtn" class="neon-button text-sm hidden sm:flex items-center">
+                        <i class="fab fa-whatsapp ml-2"></i>
+                        واتساب
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div id="mediamt" class="container mx-auto px-6 mt-14" >
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div data-aos="fade-up" data-aos-duration="1000">
+                    <div class="inline-block px-4 py-2 bg-white/10 rounded-full text-sm mb-8 backdrop-blur-sm border border-white/20">
+                        <i class="fas fa-wrench ml-2 text-yellow-500"></i>
+                        خدمات صيانة منزلية
+                    </div>
+                    
+                    <h1 class="neon-title mb-6">
+                        Warsha<br>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-400 mb-8 leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                        نختصر عليك رحلة البحث الطويلة عن فني بحيث يمكنك طلب فني بضغطة زر
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4" data-aos="fade-up" data-aos-delay="400">
+                        <button class="neon-button">
+                            <i class="fab fa-google-play ml-2"></i>
+                            تحميل اندرويد
+                        </button>
+                        <button class="neon-button">
+                            <i class="fab fa-apple ml-2"></i>
+                            تحميل للايفون
+                        </button>
+                        <button class="neon-button">
+                            <i class="fab fa-chrome ml-2"></i>
+                            عبر المتصفح
+                        </button>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="flex gap-8 mt-12" data-aos="fade-up" data-aos-delay="10" style="opacity: 10;">
+                        <div>
+                            <div class="text-3xl font-bold">250+</div>
+                            <div class="text-gray-400">فني</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">1200+</div>
+                            <div class="text-gray-400">عملية طلب</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-bold">4.6</div>
+                            <div class="text-gray-400">تقييمات</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D Element -->
+                <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="relative z-10">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-4">
+                                <div class="modern-card p-8 text-center floating-icon">
+                                    <i class="fas fa-plug text-3xl mb-2 icon-glow"></i>
+                                    <i class="fas fa-lightbulb text-3xl mb-2 icon-glow"></i>
+                                    <h3 class="font-bold">كهرباء</h3>
+                                </div>
+                                <div class="modern-card p-8 text-center floating-icon" style="animation-delay: 0.5s">
+                                    <i class="fas fa-faucet text-3xl mb-4 icon-glow"></i>
+                                    <i class="fas fa-toilet text-3xl mb-4 icon-glow"></i>
+                                    <h3 class="font-bold">صحية</h3>
+                                </div>
+                            </div>
+                            <div class="space-y-4 mt-8">
+                                <div class="modern-card p-8 text-center floating-icon" style="animation-delay: 1s">
+                                    <i class="fas fa-paint-roller text-3xl mb-2 icon-glow"></i>
+                                    <i class="fas fa-fill-drip text-3xl mb-2 icon-glow"></i>
+                                    <h3 class="font-bold">دهان</h3>
+                                </div>
+                                <div class="modern-card p-8 text-center floating-icon" style="animation-delay: 1.5s">
+                                    <i class="fas fa-hammer text-3xl mb-2 icon-glow"></i>
+                                    <i class="fas fa-screwdriver text-3xl mb-2 icon-glow"></i>
+                                    <h3 class="font-bold">صيانة عامة</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <!-- <section id="products" class="py-12">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="inline-block px-4 py-2 bg-white/10 rounded-full text-sm mb-6 backdrop-blur-sm border border-white/20" data-aos="zoom-in">
+                    <i class="fas fa-gem ml-2"></i>
+                    أحدث التصاميم
+                </div>
+                <h2 class="text-5xl font-bold mb-6" data-aos="fade-up">منتجاتنا <span class="text-gray-400">المميزة</span></h2>
+                <div class="animated-line max-w-md mx-auto"></div>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="modern-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="p-8">
+                        <div class="text-6xl mb-6 floating-icon">
+                            <i class="fas fa-crown text-yellow-500"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">القالب الملكي</h3>
+                        <p class="text-gray-400 mb-6">تصميم فاخر مع تفاصيل دقيقة وزخارف مستوحاة من القصور الأوروبية</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold">350$</span>
+                            <button class="w-12 h-12 rounded-full border border-current/20 hover:text-inherit transition flex items-center justify-center">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modern-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="p-8">
+                        <div class="text-6xl mb-6 floating-icon" style="animation-delay: 0.2s">
+                            <i class="fas fa-shapes text-blue-300"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">القالب المودرن</h3>
+                        <p class="text-gray-400 mb-6">خطوط هندسية نظيفة وبسيطة تناسب الديكورات العصرية</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold">180$</span>
+                            <button class="w-12 h-12 rounded-full border border-current/20 hover:text-inherit transition flex items-center justify-center">
+                                <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modern-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="p-8">
+                        <div class="text-6xl mb-6 floating-icon" style="animation-delay: 0.4s">
+                            <i class="fas fa-border-all text-purple-300"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-3">القالب الكلاسيكي</h3>
+                        <p class="text-gray-400 mb-6">تصميم أنيق مستوحى من العمارة الكلاسيكية مع لمسات عصرية</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-3xl font-bold">250$</span>
+                            <button  class="w-12 h-12 rounded-full border border-current/20  hover:text-inherit transition flex items-center justify-center">
+                                <i class="fas fa-arrow-left hover:rotate-360 transition-transform duration-1000"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Features -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20">
+                <div class="inline-block px-4 py-2 bg-white/10 rounded-full text-sm mb-6 backdrop-blur-sm border border-white/20" data-aos="zoom-in">
+                    <i class="fas fa-gem ml-2"></i>
+                     ما يميزنا
+                </div>
+                <h2 class="text-5xl font-bold mb-6" data-aos="fade-up">اهم <span class="text-gray-400">الخدمات</span></h2>
+                <div class="animated-line max-w-md mx-auto"></div>
+            </div>
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-crown text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">جودة عالية</h4>
+                    <p class="text-gray-400 text-sm">أفضل الفنيين </p>
+                </div>
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-truck-fast text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">السرعة</h4>
+                    <p class="text-gray-400 text-sm">وصول بغضون دقائق</p>
+                </div>
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="300">
+                    <i class="fas fa-star text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">ضمان الجودة</h4>
+                    <p class="text-gray-400 text-sm">تقييمات للفنيين</p>
+                </div>
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="400">
+                    <i class="fas fa-clock text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">دعم 24/7</h4>
+                    <p class="text-gray-400 text-sm">خدمة عملاء</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- payment -->
+    <section class="py-20 " >
+        <div class="container mx-auto px-6 " >
+            <div class="text-center mb-20">
+                <div class="inline-block px-4 py-2 bg-white/10 rounded-full text-sm mb-6 backdrop-blur-sm border border-white/20" data-aos="zoom-in">
+                    <i class="fas fa-gem ml-2"></i>
+                    سهولة الدفع 
+                </div>
+                <h2 class="text-5xl font-bold mb-6" data-aos="fade-up">طرق  <span class="text-gray-400">الدفع</span></h2>
+                <div class="animated-line max-w-md mx-auto"></div>
+            </div>
+            <div class="grid md:grid-cols-2 gap-6 text-center">
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="100" >
+                    <i class="fas fa-qrcode text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">الكتروني</h4>
+                    <p class="text-gray-400 text-sm">Sham Cash</p>
+                </div>
+                <div class="modern-card p-6 text-center" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-coins text-3xl mb-3 icon-glow"></i>
+                    <h4 class="font-bold mb-2">نقداً</h4>
+                    <p class="text-gray-400 text-sm">الدفع عند الانتهاء</p>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 mt-20">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold mb-4">
+                        <span class="text-inherit">◈</span>
+                        <span class="text-inherit mx-2">Warsha</span>
+                        <span class="text-gray-500">LAB</span>
+                    </div>
+                    <p class="text-gray-400">توفير وقت واسعار رحمانية</p>
+                </div>
+                <!-- <div>
+                    <h4 class="font-bold mb-4">روابط سريعة</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-inherit transition">الرئيسية</a></li>
+                        <li><a href="#" class="hover:text-inherit transition">منتجاتنا</a></li>
+                        <li><a href="#" class="hover:text-inherit transition">المعرض</a></li>
+                    </ul>
+                </div> -->
+                <div>
+                    <h4 class="font-bold mb-4">تواصل معنا</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><i class="fab fa-whatsapp ml-2" href="https://wa.me/+963981082693"></i> +963 981 082 693</li>
+                        <li><i class="far fa-envelope ml-2"></i> info@Warsha.com</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">تابعنا</h4>
+                    <div class="flex space-x-4 space-x-reverse text-2xl">
+                        <a href="#" class="text-gray-400 hover:text-inherit transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-inherit transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-inherit transition"><i class="fab fa-x-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center text-gray-400 mt-8 pt-8 border-t border-white/10">
+                <p>© 2026 Warsha LAB - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // تفعيل AOS
+        AOS.init({
+            duration: 800,
+            once: false,
+            mirror: true
+        });
+
+        // إنشاء جزيئات متحركة
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 10 + 's';
+                particle.style.animationDuration = 10 + Math.random() * 15 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // تبديل الوضع (Dark/Light)
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+
+        // حفظ الوضع في localStorage
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            
+            if (savedTheme === 'light') {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+            }
+        }
+        let whatsappBtn = document.getElementById('whatsappBtn');
+        whatsappBtn.onclick = function(){
+            window.location = 'https://wa.me/+963981082693';
+        }
+
+        // حفظ الوضع عند التبديل
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeToggle').querySelector('i');
+            
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // تحميل الوضع المحفوظ
+        loadTheme();
+    </script>
+
+</body>
+</html>
